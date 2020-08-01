@@ -102,5 +102,42 @@ public class ClientBean {
         }
         return client_name;
     }
+    public boolean make_User(String client_id, String client_password ,String client_name, String phone_number, 
+            String country, String address, String email) {
+        connect();
+
+        String sql = "insert into client_info1 values(?, ?, ?, ?, 1)";
+
+        try {
+        	pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, client_id);
+            pstmt.setString(2, client_password);
+            pstmt.setString(3, client_name);
+            pstmt.setString(4, phone_number);
+
+            int n = pstmt.executeUpdate();
+
+            sql = "insert into client_info2 values(?, ?, ?, ?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, client_id);
+            pstmt.setString(2, country);
+            pstmt.setString(3, address);
+            pstmt.setString(4, email);
+
+            n = pstmt.executeUpdate();
+
+            System.out.println(client_name +"님 회원가입 성공");
+
+      
+        }catch (SQLException e) {
+            System.out.println("회원가입 실패");
+            e.printStackTrace();
+            return false;
+        } finally {
+            disconnect();
+        }
+        return true;
+    }
 }
+
 
