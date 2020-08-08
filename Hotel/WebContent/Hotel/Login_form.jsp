@@ -1,6 +1,6 @@
 <%-- 호텔 예약을 하기위해 로그인 하는 페이지 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" errorPage="Reservation_error.jsp"%>
 <%@page import="Login.ClientDAO"%>
 
 <!DOCTYPE html>

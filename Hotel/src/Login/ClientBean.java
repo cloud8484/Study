@@ -138,6 +138,62 @@ public class ClientBean {
         }
         return true;
     }
+ // Client가 자신의 정보를 수정할 때 이용할 자신의 내용 불러오는 함수
+    public ClientDAO getOneUser(String client_id) {
+        connect();
+
+        String sql = "select client_info1.client_id, client_name, phone_number, country, address, email"
+                +" from client_info1, client_info2 where client_info1.client_id = ? and client_info1.client_id = client_info2.client_id";
+        ClientDAO clientbook = new ClientDAO();
+
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, client_id);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            rs.next();
+
+            clientbook.setClient_id(rs.getString("client_id"));
+            clientbook.setClient_name(rs.getString("client_name"));
+            clientbook.setPhone_number(rs.getString("phone_number"));
+            clientbook.setCountry(rs.getString("country"));
+            clientbook.setAddress(rs.getString("address"));
+            clientbook.setEmail(rs.getString("email"));
+
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            disconnect();
+        }
+        return clientbook;
+    }
+ // 유저 회원정보 수정할때 쓰는 함수
+    public boolean updateUser(ClientDAO clientdao) {
+        connect();
+
+        String sql = "update client_info1, client_info2 set client_name = ?, phone_number = ?, country = ?, address = ?, email = ? "
+                + "where client_info1.client_id = ? and client_info2.client_id = ?";
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, clientdao.getClient_name());
+            pstmt.setString(2, clientdao.getPhone_number());
+            pstmt.setString(3, clientdao.getCountry());
+            pstmt.setString(4, clientdao.getAddress());
+            pstmt.setString(5, clientdao.getEmail());
+            pstmt.setString(6, clientdao.getClient_id());
+            pstmt.setString(7, clientdao.getClient_id());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            disconnect();
+        }
+        return true;
+    }
 }
 
 

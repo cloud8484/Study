@@ -5,7 +5,7 @@
 <%@page import="java.security.MessageDigest"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" errorPage="Reservation_error.jsp"
-	import="Login.*, java.util.*"%>
+	import="Login.*, java.util.*" errorPage="Reservation_error.jsp"%>
 
 <!DOCTYPE html>
 <%
@@ -95,6 +95,18 @@
 			pageContext.forward("Login_form.jsp");
 		}
 	}
+	
+	//회원정보수정
+	else if(action.equals("edit_user")) {
+		pageContext.forward("Edit_user.jsp");
+	}
+	
+	else if(action.equals("update_user")){
+        clientbean.updateUser(clientdao);
+        session.setAttribute("name", clientdao.getClient_name());
+        pageContext.forward("Reservation_available.jsp");
+        System.out.println("Update: " + session.getAttribute("name"));
+    }
 	
 	
 	else {
