@@ -16,11 +16,11 @@
 <jsp:useBean id="clientdao" class="Login.ClientDAO">
 	<jsp:setProperty property="*" name="clientdao" />
 </jsp:useBean>
-<%-- 
+
 <jsp:useBean id="roomdao" class="Login.RoomDAO">
 	<jsp:setProperty property="*" name="roomdao" />
 </jsp:useBean>
---%>
+
 <% 
 	String action = request.getParameter("action");
 	String password = "";
@@ -30,7 +30,12 @@
 	
 	//예약가능한 방들 보여주기
 	if (action.equals("list")) {
+		ArrayList<RoomDAO> available_rooms = clientbean.getAvailableRoom();
+        request.setAttribute("available_rooms", available_rooms);
 
+        System.out.println("See available list: "+ session.getAttribute("name"));
+
+        pageContext.forward("Reservation_available.jsp");
 	}
 	
 	//로그인하기
@@ -48,6 +53,11 @@
 				session.setAttribute("client_id", client_id);
 				session.setAttribute("client_password", password);
 				
+				ArrayList<RoomDAO> available_rooms = clientbean.getAvailableRoom();
+                request.setAttribute("available_rooms", available_rooms);
+
+                System.out.println("Login: " + session.getAttribute("name"));
+                
 				pageContext.forward("Reservation_available.jsp");
 			}
 		}
@@ -100,7 +110,7 @@
 	else if(action.equals("edit_user")) {
 		pageContext.forward("Edit_user.jsp");
 	}
-	
+	//수정뒤
 	else if(action.equals("update_user")){
         clientbean.updateUser(clientdao);
         session.setAttribute("name", clientdao.getClient_name());
@@ -108,7 +118,16 @@
         System.out.println("Update: " + session.getAttribute("name"));
     }
 	
+	else if(action.equals("show")) {
 	
+	ArrayList<RoomDAO> booked_rooms = clientbean.getUserReservation((String)session.getAttribute("name"));
+    request.setAttribute("booked_rooms", booked_rooms);
+
+    System.out.println("See reservation: " + session.getAttribute("name"));
+
+    pageContext.forward("User_reservation_info.jsp");
+	
+	}
 	else {
 		response.sendRedirect("Reservation_control.jsp?action=form");
 	}

@@ -5,8 +5,8 @@
 <!DOCTYPE html>
 
 <html>
-<head>
-    <link rel="stylesheet" href="Reservation.css" type="text/css" media="screen"/>
+<head>>
+    <link rel="stylesheet" href="Design.css" type="text/css" media="screen"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script language=JavaScript>
         function check_in(room_number) {
@@ -32,6 +32,36 @@
             <button name="action" value="form" type="submit">로그아웃</button>
             <button name="action" value="show" type="submit">예약한 목록</button>
             <button name="action" type="submit" value="edit_user">회원정보수정</button>
+        </form>
+        
+        <form>
+
+            <table border="1">
+                <tr>
+                    <th>방번호</th>
+                    <th>방등급</th>
+                    <th>방뷰</th>
+                    <th>최대인원</th>
+                    <th>침대개수</th>
+                    <th>흡연가능여부</th>
+                    <th>요금</th>
+                </tr>
+                <%
+                    for(RoomDAO room : (ArrayList<RoomDAO>)available_rooms){
+                %>
+                <tr>
+                    <td><a href="javascript:check_in(<%=room.getRoom_number()%>)"><%=room.getRoom_number() %></a></td>
+                    <td><%=room.getRoom_class() %></td>
+                    <td><%=room.getRoom_view() %></td>
+                    <td><%=room.getMax_number() %></td>
+                    <td><%=room.getBed_number() %></td>
+                    <td><%=room.isIs_smoke() %></td>
+                    <td><%=room.getRoom_fee() %></td>
+                </tr>
+                <% 
+                    }
+                %>
+            </table>
         </form>
 
 
